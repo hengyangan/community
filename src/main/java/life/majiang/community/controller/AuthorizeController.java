@@ -29,11 +29,12 @@ public class AuthorizeController {
     private String redirectUri;
     @Value("${github.client.secret}")
     private String clientSecret;
+
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletRequest request,
-                           HttpServletResponse response){
+                           HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
         accessTokenDTO.setRedirect_uri(redirectUri);
@@ -43,7 +44,7 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         System.out.println(githubUser.getName());
-        if(githubUser != null){
+        if (githubUser != null && githubUser.getId() != null) {
             //登录成功，跳转
             User user = new User();
             user.setToken(UUID.randomUUID().toString());
@@ -52,11 +53,10 @@ public class AuthorizeController {
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
             userMapper.insert(user);
-            response.addCookie(new Cookie("token",user.getToken()));
+            response.addCookie(new Cookie("token", user.getToken()));
 //            request.getSession().setAttribute("githubUser",githubUser);
             return "redirect:/";
-        }
-        else {
+        } else {
             //登录失败，跳转
             return "redirect:/";
         }
