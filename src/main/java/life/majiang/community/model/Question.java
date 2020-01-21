@@ -8,10 +8,10 @@ public class Question {
     private String title;
     private String description;
     private String tag;
-    private long gmt_create;
-    private long gmt_modified;
+    private long gmtCreate;
+    private long gmtModified;
     private Integer creator;
-    private Integer viewCount;
-    private Integer commentCount;
-    private Integer likeCount;
+    private Integer viewCount =0 ;
+    private Integer commentCount =0;
+    private Integer likeCount =0;
 }
