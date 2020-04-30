@@ -35,6 +35,9 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOList);
+
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount,page,size);
         return paginationDTO;
     }
 }
